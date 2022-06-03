@@ -9,13 +9,13 @@ namespace SwarmyNET
 {        static async Task Main(string[] args)
         {
             SwarmyCore swarmyCore = new SwarmyCore();
-            await swarmyCore.PlayWrightInitialization();
+            await swarmyCore.GetModelsProfiles(5, InitializationCommand.Continue);
 
             MLContext mlContext = new MLContext();
             AIModel aiModel = new AIModel();
 
-            ITransformer model = aiModel.GenerateModel(mlContext);
-            aiModel.ClassifySingleImage(mlContext, model);
+            // ITransformer model = aiModel.GenerateModel(mlContext);
+            // aiModel.ClassifySingleImage(mlContext, model);
 
         }
     }
