@@ -9,7 +9,7 @@ namespace Swarmy
         public static string imagesFolder = Path.Combine(assetsPath, "images");
         public static string trainTagsTsv = Path.Combine(imagesFolder, "tags.tsv");
         public static string testTagsTsv = Path.Combine(imagesFolder, "test-tags.tsv");
-        public static string predictSingleImage = Path.Combine(imagesFolder, "toaster3.jpg");
+        public static string predictSingleImage = Path.Combine(imagesFolder, "MLmodel14.png");
         public static string inceptionTensorFlowModel = Path.Combine(assetsPath, "inception", "tensorflow_inception_graph.pb");
 
     }

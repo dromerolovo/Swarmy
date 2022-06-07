@@ -12,14 +12,16 @@ namespace Swarmy
         
     {
         
-        //Get models to imageBucket
-        public async Task GetModelsProfiles(int repetition, InitializationCommand command)
+        //Programmatic profile in progress
+        public async Task GetModelsProfiles(int repetition, InitializationCommand command, int startNumber = 0)
         {
             string [] files = Directory.GetFiles(Path.Combine(Environment.CurrentDirectory, @"imageBucket\"), "*.png");
             List<string> filesNames = new List<string> {};
 
             List<int> lastModelNumberList = new List<int>{};
             int counter = 0;
+
+            System.IO.DirectoryInfo directory = new DirectoryInfo(Path.Combine(Environment.CurrentDirectory, @"imageBucket\"));
 
             if(command == InitializationCommand.Continue) {
 
@@ -40,7 +42,12 @@ namespace Swarmy
                 }
             } else if(command == InitializationCommand.StartOver) {
 
-                counter = 0;
+                counter = startNumber;
+
+                foreach(FileInfo file in directory.GetFiles()) {
+
+                    file.Delete();
+                }
             }
 
             
@@ -60,11 +67,10 @@ namespace Swarmy
 
         }
 
+        public enum InitializationCommand {StartOver, Continue}
         
     }
 
-        public enum InitializationCommand {StartOver, Continue}
-
-    
+        
 
 }
