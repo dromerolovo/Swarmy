@@ -67,7 +67,8 @@ namespace Swarmy
 
         }
 
-        public enum InitializationCommand {StartOver, Continue}
+
+
         
     }
 
