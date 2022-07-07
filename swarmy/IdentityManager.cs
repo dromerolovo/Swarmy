@@ -9,13 +9,13 @@ namespace Swarmy
 {
     public enum InitializationCommand {StartOver, Continue}
 
-    public class IdentityManager
+    sealed public class IdentityManager
     {   
         
 
         public class IdentityName {
 
-            protected string? name;
+            private string? name;
             public string Name
             {
                 get => name!;
@@ -42,7 +42,6 @@ namespace Swarmy
             var recordsList = new List<string> {};
 
 
-            //./identityManagment/raw_data/female_names.csv
             using( var StreamReader = new StreamReader(Path.Combine(Environment.CurrentDirectory, pathToFile)))
             {
                 using(var csvReader = new CsvReader(StreamReader, System.Globalization.CultureInfo.CurrentCulture))
@@ -80,18 +79,19 @@ namespace Swarmy
                 Identity identity = new Identity();
                 Random random = new Random();
                 int randomNumber = random.Next(1,149);
-                int randomNumberSex = random.Next(0, 2);
+                int randomNumberGender = random.Next(0, 2);
                 string uuid = Guid.NewGuid().ToString();
                 identity.Id = uuid;
+                identity.Gmail = false;
 
-                if(randomNumberSex == 0)
+                if(randomNumberGender == 0)
                 {
-                    identity.Sex = "Female";
+                    identity.Genre = "Female";
                     identity.Name = listFemaleName[randomNumber];
                 } 
                 else
                 {
-                    identity.Sex = "Male";
+                    identity.Genre = "Male";
                     identity.Name = listMaleName[randomNumber];
                 }
 
@@ -125,49 +125,39 @@ namespace Swarmy
                     }
                 }
             }
+        }
 
-            // using( var writer = new StreamWriter(Path.Combine(Environment.CurrentDirectory, "./identityManagment/identities.csv")))
-            // {
-            //     using(var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
-            //     {
-                    // if (initializationCommand == InitializationCommand.Continue)
-                    // {
-                        
-                    //     int count = 0;
+        public int getRecordsCount() {
 
-                    //     foreach(var record in identityRecords)
-                    //     {
-                    //         count++;
-                    //         if(count <= limit)
-                    //         {
-                    //             csv.NextRecord();
-                    //             csv.Row
-                    //         }
-                    //         else
-                    //         {
-                    //             csv.WriteRecord(record);
-                    //             csv.NextRecord();
-                    //         }
-                    //     }
+            var config = new CsvConfiguration(CultureInfo.InvariantCulture);
+            int count = 0;
 
-                    // }
-                    // else if(initializationCommand == InitializationCommand.StartOver)
-                    // {
-                    //     csv.WriteRecords(identityRecords!);
-                    //     writer.Flush();
-                    // }
-            //     }
-            // }
+            config.HeaderValidated = null;
+
+            using (TextReader dataCsvFileReader = File.OpenText(Path.Combine(Environment.CurrentDirectory, "./identityManagment/identities.csv")))
+            {
+                using (CsvReader dataCsvReader = new CsvReader(dataCsvFileReader, CultureInfo.InvariantCulture))
+                {
+                    var records = dataCsvReader.GetRecords<Identity>().ToList();
+                    var filteredRecords = records.Where(element => element.Gmail == false);
+                    count = filteredRecords.Count();
+                }
+            }
+
+            return count;
         }
     }
+
+
 
     public class Identity
     {
         public string? Id {get; set;}
-        public string? Sex {get; set;}
+        public string? Genre {get; set;}
         public string? Name {get; set;}
         public string? Surname {get; set;}
-        public string? ProfilePicture {get; set;}
+        public bool? Gmail {get; set;}
+        
 
     }
 }

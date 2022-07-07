@@ -358,3 +358,7 @@ MigrationBackup/
 
 # Mac-specific
 .DS_Store
+
+IdentityManagment/identities.csv
+IdentityManagment/accounts/*
+!IdentityManagment/accounts/.gitkeep
